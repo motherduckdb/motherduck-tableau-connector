@@ -1,4 +1,4 @@
-# Developing DuckDB Tableau Connector
+# Developing the MotherDuck Tableau Connector
 
 ## Notes on manifest.xml
 ### <connector-plugin> tag

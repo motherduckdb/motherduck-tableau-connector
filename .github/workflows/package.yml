@@ -1,4 +1,4 @@
-name: Package DuckDB Taco
+name: Package MotherDuck Taco
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
     # The repo carries 0.0.0; a real version exists only in a released Taco.
     - name: Stamp the release version
       if: inputs.version
-      working-directory: taco/tableau_connectors/duckdb_jdbc
+      working-directory: taco/tableau_connectors/motherduck_jdbc
       env:
         VERSION: ${{ inputs.version }}
       run: |
@@ -39,7 +39,7 @@ jobs:
     # Tableau shows the manifest version; the JDBC user agent reports the JS
     # constant. A Taco with the two out of sync is unidentifiable in logs.
     - name: Check the user-agent version matches the manifest
-      working-directory: taco/tableau_connectors/duckdb_jdbc
+      working-directory: taco/tableau_connectors/motherduck_jdbc
       run: |
         manifest=$(grep -o "plugin-version='[^']*'" manifest.xml | cut -d"'" -f2)
         js=$(grep -o "MOTHERDUCK_CONNECTOR_VERSION = '[^']*'" connectionProperties.js | cut -d"'" -f2)
@@ -70,20 +70,20 @@ jobs:
         source .venv/bin/activate
         cd connector-packager
         python setup.py install
-        python -m connector_packager.package ../../taco/tableau_connectors/duckdb_jdbc
+        python -m connector_packager.package ../../taco/tableau_connectors/motherduck_jdbc
 
     - name: Upload Taco
       uses: actions/upload-artifact@v4
       with:
-        name: duckdb_taco
+        name: motherduck_taco
         path: |
-          sdk/connector-packager/packaged-connector/duckdb_jdbc*.taco
+          sdk/connector-packager/packaged-connector/motherduck_jdbc*.taco
         # The packager exits 0 on validation failures; the missing Taco is the signal.
         if-no-files-found: error
 
     - name: Upload Connector
       uses: actions/upload-artifact@v4
       with:
-        name: duckdb_jdbc
+        name: motherduck_jdbc
         path: |
-          taco/tableau_connectors/duckdb_jdbc
+          taco/tableau_connectors/motherduck_jdbc

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8' ?>
-<tdr class='duckdb_jdbc'>
+<tdr class='motherduck_jdbc'>
 	<connection-resolver>
       <connection-builder>
         <script file='connectionBuilder.js'/>
@@ -7,12 +7,11 @@
       <connection-normalizer>
         <required-attributes>
           <attribute-list>
-            <attr>authentication</attr>
             <attr>server</attr>
+            <attr>dbname</attr>
+            <attr>authentication</attr>
             <attr>password</attr>
             <attr>initialSQL</attr>
-            <attr>v-connection_string_md</attr>
-            <attr>v-connection_string_file</attr>
           </attribute-list>
         </required-attributes>
       </connection-normalizer>

@@ -67,7 +67,7 @@ jobs:
       - name: Download the packaged Taco
         uses: actions/download-artifact@v4
         with:
-          name: duckdb_taco
+          name: motherduck_taco
 
       # jarsigner. Not preinstalled on every runner image, and the version it
       # ships with decides the signature algorithm Tableau ends up verifying.
@@ -97,8 +97,8 @@ jobs:
       # tool by file extension and silently skips a .taco.
       - name: Sign Taco
         run: |
-          taco="duckdb_jdbc-v$VERSION.taco"
-          signed="duckdb_jdbc-v$VERSION-signed.taco"
+          taco="motherduck_jdbc-v$VERSION.taco"
+          signed="motherduck_jdbc-v$VERSION-signed.taco"
           jarsigner -keystore NONE -storepass NONE -storetype PKCS11 -sigalg SHA256withRSA \
             -providerClass sun.security.pkcs11.SunPKCS11 \
             -providerArg "${{ steps.stm.outputs.PKCS11_CONFIG }}" \
@@ -116,7 +116,7 @@ jobs:
         if: inputs.dry_run
         uses: actions/upload-artifact@v4
         with:
-          name: duckdb_taco_signed
+          name: motherduck_taco_signed
           path: ${{ env.TACO }}
 
       # With assets, gh publishes only after they're uploaded and deletes the draft if uploading fails.

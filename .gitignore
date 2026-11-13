@@ -4,3 +4,4 @@ tdvt_workspace
 .venv
 .idea
 .claude
+testing/tds/*.password

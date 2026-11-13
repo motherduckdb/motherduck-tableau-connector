@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!-- See notes below for definitions that require 2020.3 or newer -->
-<dialect name='DuckDB'
-         class='duckdb_jdbc'
+<dialect name='MotherDuck'
+         class='motherduck_jdbc'
          base='PostgreSQL90Dialect'
          version='18.1'>
   <function-map>
@@ -237,7 +237,6 @@
       </date-part-group>
     </date-parts>
     <format-select>
-      <part name='Into' value='CREATE TEMP TABLE %1 AS' />
       <part name='Select' value='SELECT %1' />
       <part name='From' value='FROM %1' />
       <part name='Where' value='WHERE %1' />
