@@ -39,7 +39,17 @@ Launch Tableau and create a new connection by choosing "MotherDuck by MotherDuck
 
 ## Testing
 
-`testing/` holds the [TDVT](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) setup: `testv1.sql` loads the test
+CI runs a smoke test on every pull request: it evaluates the connector scripts the way Tableau does and uses the
+resulting URL and properties to connect to MotherDuck through the PostgreSQL JDBC driver. Locally:
+
+```sh
+node testing/smoke/connection.mjs pg.us-east-1-aws.motherduck.com sample_data "$MOTHERDUCK_TOKEN" \
+  | java -cp postgresql.jar testing/smoke/Smoke.java
+```
+
+The SQL dialect is only covered by TDVT, which needs Tableau Desktop and doesn't run in CI.
+
+`testing/` also holds the [TDVT](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) setup: `testv1.sql` loads the test
 dataset into MotherDuck and `tds/` has the two data sources (set their `server` attribute to test another
 region or environment). Put the token in `testing/tds/motherduck_jdbc.password` as
 `motherduck_jdbc;<token>`, then from `testing/`:

@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Download the PostgreSQL JDBC driver
+        run: curl -sSfo postgresql.jar https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.4/postgresql-42.7.4.jar
+
+      # Builds the connection like Tableau does and uses it against MotherDuck. The SQL dialect is
+      # only covered by TDVT, which needs Tableau Desktop (see the README).
+      - name: Connect to MotherDuck through the connector's URL and properties
+        env:
+          MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+        run: |
+          node testing/smoke/connection.mjs pg.us-east-1-aws.motherduck.com sample_data "$MOTHERDUCK_TOKEN" \
+            | java -cp postgresql.jar testing/smoke/Smoke.java
